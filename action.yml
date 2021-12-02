@@ -1,10 +1,14 @@
 name: Prepare repo
 description: "Checks out your repository and installs all your dependencies"
 inputs:
-  npm-token:
-    description: "A token for interacting with NPM. This will be set as the NODE_AUTH_TOKEN environment variable when initializing node."
+  auth-token:
+    description: "A token for interacting with the package registry. This will be set as the NODE_AUTH_TOKEN environment variable when initializing node."
     required: false
     default: ""
+  registry-url:
+    description: "The package registry to set up for authentication."
+    required: false
+    default: "https://registry.npmjs.org/"
 runs:
   using: "composite"
   steps:
@@ -13,6 +17,7 @@ runs:
       with:
         node-version-file: '.nvmrc'
         cache: yarn
+        registry-url: ${{ inputs.registry-url }}
       env:
         NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
 
