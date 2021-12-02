@@ -1,5 +1,10 @@
 name: Prepare repo
 description: "Checks out your repository and installs all your dependencies"
+inputs:
+  npm-token:
+    description: "A token for interacting with NPM. This will be set as the NODE_AUTH_TOKEN environment variable when initializing node."
+    required: false
+    default: ""
 runs:
   using: "composite"
   steps:
@@ -8,6 +13,8 @@ runs:
       with:
         node-version-file: '.nvmrc'
         cache: yarn
+      env:
+        NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
 
     - name: Install dependencies
       run: yarn install --immutable
